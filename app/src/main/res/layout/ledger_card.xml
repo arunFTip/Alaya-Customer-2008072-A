@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:id="@+id/layout"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:paddingBottom="7dp"
+    android:paddingTop="7dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/date"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/receipt"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/receipt"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/amount"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/total"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/total"
+        android:layout_weight="1"/>
+</LinearLayout>

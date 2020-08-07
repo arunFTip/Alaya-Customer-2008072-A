@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".OptionActivity"
+    tools:showIn="@layout/activity_options">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        android:paddingBottom="50dp">
+        <ScrollView
+            android:id="@+id/scroll"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:focusable="true" android:focusableInTouchMode="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:focusable="true" android:focusableInTouchMode="true">
+
+                <Button
+                    android:layout_margin="15dp"
+                    android:id="@+id/payment_request"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:textSize="15sp"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/payment_request"
+                    android:onClick="payment_request" />
+                <Button
+                    android:layout_margin="15dp"
+                    android:id="@+id/download_statement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:textSize="15sp"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/download_statement"
+                    android:onClick="download_statement" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+
+                android:orientation="vertical"
+                android:focusable="true" android:focusableInTouchMode="true">
+
+                <TextView
+                    android:layout_margin="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Enter new chit amount"/>
+                <EditText
+                    android:layout_margin="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:id="@+id/chit_request_amount"/>
+                <Button
+                    android:layout_margin="15dp"
+                    android:id="@+id/chit_request"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:textSize="15sp"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/chit_request"
+                    android:onClick="new_chit_request" />
+
+            </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.constraint.ConstraintLayout>

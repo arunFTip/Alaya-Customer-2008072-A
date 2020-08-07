@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_passbook"
+        android:icon="@drawable/payment"
+        android:title="@string/passbook" />
+
+<!--    <item-->
+<!--        android:id="@+id/navigation_report"-->
+<!--        android:icon="@drawable/report"-->
+<!--        android:title="@string/reports" />-->
+
+    <item
+        android:id="@+id/navigation_ledger_extract"
+        android:icon="@drawable/report"
+        android:title="@string/ledger_extract" />
+
+    <item
+        android:id="@+id/navigation_options"
+        android:icon="@drawable/options"
+        android:title="@string/options" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/account"
+        android:title="@string/profile" />
+
+</menu>
