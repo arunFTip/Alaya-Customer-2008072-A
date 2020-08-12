@@ -124,6 +124,15 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.action_contact:
                 startActivity(new Intent(this, ContactAcivity.class));
                 return true;
+            case R.id.action_privacy_policy:
+                startActivity(new Intent(this,PrivacyPolicyActivity.class));
+                return true;
+            case R.id.action_terms_conditions:
+                startActivity(new Intent(this,TermsConditionsActivity.class));
+                return true;
+            case R.id.action_refund_cancellation:
+                startActivity(new Intent(this,ReturnRefundActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

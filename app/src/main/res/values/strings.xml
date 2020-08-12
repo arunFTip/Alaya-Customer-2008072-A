@@ -45,8 +45,14 @@
     <string name="payment_request">Send Payment Request</string>
     <string name="download_statement">Download Statement</string>
     <string name="chit_request">Send New Chit Request</string>
+
+    <!--    menu main-->
     <string name="schemes">Schemes</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_conditions">Terms and Conditions</string>
+    <string name="refund_cancellation">Refund and Cancellation </string>
     <string name="contact_us">Contact Us</string>
+
     <string name="title_activity_schemes">SchemesActivity</string>
     <string name="title_activity_contact_acivity">ContactAcivity</string>
     <string name="chairman"><![CDATA[CHAIRMAN & MD]]></string>
@@ -67,4 +73,6 @@
     <string name="termination_date">Termination Date</string>
     <string name="no_of_chit">No of Chit / Amount</string>
     <string name="running_balance">Running Balance</string>
+
+
 </resources>
