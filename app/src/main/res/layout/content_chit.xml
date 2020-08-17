@@ -7,13 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ChitActivity"
     tools:showIn="@layout/activity_chit">
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="4dp"
-        android:paddingBottom="50dp">
+
     <ScrollView
         android:id="@+id/scroll"
         app:layout_constraintTop_toTopOf="parent"
@@ -378,6 +372,6 @@
 
         </LinearLayout>
     </ScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </android.support.constraint.ConstraintLayout>

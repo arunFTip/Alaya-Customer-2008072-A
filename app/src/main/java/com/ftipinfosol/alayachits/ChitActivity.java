@@ -37,7 +37,7 @@ public class ChitActivity extends AppCompatActivity {
     SimpleDateFormat date_format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 
     private boolean isLoading = false;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    //private SwipeRefreshLayout mSwipeRefreshLayout;
     TextView customer_name, cust_code, ticket_code, scheme_value, duration, month, amount, cheque_no, cheque_date, commence_date, end_date, auction_no, running_balance;
     CardView card;
 
@@ -50,10 +50,6 @@ public class ChitActivity extends AppCompatActivity {
                 case R.id.navigation_passbook:
                     startActivity(new Intent(getApplicationContext(), PassbookActivity.class).putExtra("ticket", String.valueOf(ticket)));
                     return true;
-//                case R.id.navigation_report:
-//                    startActivity(new Intent(getApplicationContext(), ReportsActivity.class).putExtra("ticket", String.valueOf(ticket)));
-//                    return true;
-
                 case R.id.navigation_options:
                     startActivity(new Intent(getApplicationContext(), OptionActivity.class).putExtra("ticket", String.valueOf(ticket)));
                     return true;
@@ -80,12 +76,19 @@ public class ChitActivity extends AppCompatActivity {
             toolbar.setTitle("Ticket : "+(ticket.getString("ticket_code").length()>0?ticket.getString("ticket_code"):ticket.getString("temp_id")));
             tiid = ticket.getString("tiid");
             setSupportActionBar(toolbar);
-            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+//            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setDisplayShowHomeEnabled(true);
         } catch (JSONException e) {
             e.printStackTrace();
             finish();
         }
+
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+//            }
+//        });
 
         customer_name = findViewById(R.id.customer_name);
         cust_code = findViewById(R.id.cust_code);
@@ -102,24 +105,26 @@ public class ChitActivity extends AppCompatActivity {
         cheque_date = findViewById(R.id.cheque_date);
         card = findViewById(R.id.card);
 
-        mSwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        //mSwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         prepareData();
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                isLoading = false;
-                prepareData();
-            }
-        });
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                isLoading = false;
+//                prepareData();
+//            }
+//        });
 
     }
 
 
+
+
     private void prepareData() {
-        if(isLoading){return;}
-        else
-        { isLoading=true;}
+//        if(isLoading){return;}
+//        else
+//        { isLoading=true;}
         params.put("tiid", tiid);
         client.addHeader("Accept", "application/json");
         client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
@@ -158,7 +163,7 @@ public class ChitActivity extends AppCompatActivity {
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
-                mSwipeRefreshLayout.setRefreshing(false);
+                //mSwipeRefreshLayout.setRefreshing(false);
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
@@ -181,8 +186,16 @@ public class ChitActivity extends AppCompatActivity {
             case R.id.action_contact:
                 startActivity(new Intent(this, ContactAcivity.class));
                 return true;
+            case R.id.action_privacy_policy:
+                startActivity(new Intent(this,PrivacyPolicyActivity.class));
+                return true;
+            case R.id.action_terms_conditions:
+                startActivity(new Intent(this,TermsConditionsActivity.class));
+                return true;
+            case R.id.action_refund_cancellation:
+                startActivity(new Intent(this,ReturnRefundActivity.class));
+                return true;
             default:
-                finish();
                 return super.onOptionsItemSelected(item);
         }
     }

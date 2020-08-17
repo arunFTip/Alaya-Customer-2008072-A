@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.ftipinfosol.alayachits.Adapters.HttpCache;
@@ -53,17 +54,13 @@ public class LedgerExtract extends AppCompatActivity {
                 case R.id.navigation_passbook:
                     startActivity(new Intent(getApplicationContext(), PassbookActivity.class).putExtra("ticket", String.valueOf(ticket)));
                     return true;
-//                case R.id.navigation_report:
-//                    startActivity(new Intent(getApplicationContext(), ReportsActivity.class).putExtra("ticket", String.valueOf(ticket)));
-//                    return true;
                 case R.id.navigation_profile:
                     startActivity(new Intent(getApplicationContext(), ChitActivity.class).putExtra("ticket", String.valueOf(ticket)));
                     return true;
-
                 case R.id.navigation_ledger_extract:
-                    startActivity(new Intent(getApplicationContext(), LedgerExtract.class).putExtra("ticket",String.valueOf(ticket)));
                     return true;
                 case R.id.navigation_options:
+                    startActivity(new Intent(getApplicationContext(), OptionActivity.class).putExtra("ticket",String.valueOf(ticket)));
                     return true;
             }
             return false;
@@ -85,12 +82,20 @@ public class LedgerExtract extends AppCompatActivity {
             tiid = ticket.getString("tiid");
             Log.d("ledgerExtracttiid", tiid);
             setSupportActionBar(toolbar);
-            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+//            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setDisplayShowHomeEnabled(true);
         } catch (JSONException e) {
+            Log.d("ledgerExtract", e.getMessage());
             e.printStackTrace();
             finish();
         }
+
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+//            }
+//        });
 
         //mSwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         adapter = new LedgerExtractAdapter(report_list);
@@ -111,10 +116,11 @@ public class LedgerExtract extends AppCompatActivity {
 //        });
     }
 
+
     private void prepareData() {
-        if(isLoading){return;}
-        else
-        { isLoading=true;}
+//        if(isLoading){return;}
+//        else
+//        { isLoading=true;}
 
         client.addHeader("Accept", "application/json");
         client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
@@ -141,7 +147,7 @@ public class LedgerExtract extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
-                Toast.makeText(getApplicationContext(), "on failure", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "on failure", Toast.LENGTH_SHORT).show();
                 Log.e("ledgerExtracttiidfail",response.toString());
                 e.printStackTrace();
             }
@@ -182,8 +188,16 @@ public class LedgerExtract extends AppCompatActivity {
             case R.id.action_contact:
                 startActivity(new Intent(this, ContactAcivity.class));
                 return true;
+            case R.id.action_privacy_policy:
+                startActivity(new Intent(this,PrivacyPolicyActivity.class));
+                return true;
+            case R.id.action_terms_conditions:
+                startActivity(new Intent(this,TermsConditionsActivity.class));
+                return true;
+            case R.id.action_refund_cancellation:
+                startActivity(new Intent(this,ReturnRefundActivity.class));
+                return true;
             default:
-                finish();
                 return super.onOptionsItemSelected(item);
         }
     }

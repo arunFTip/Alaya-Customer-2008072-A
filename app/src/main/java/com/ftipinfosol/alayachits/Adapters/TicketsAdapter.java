@@ -47,7 +47,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ticket_code.setText(tic.getString("ticket_code").length()>0?tic.getString("ticket_code"):tic.getString("temp_id"));
                 scheme_value.setText(tic.getString("scheme_value"));
 
-                if(tic.getString("ticket_status").equals("1")){
+                if(tic.getString("closed_status").equals("0")){
                     close_status.setText("  Open  ");
                     close_status.setBackgroundResource(R.color.colorGreen);
 

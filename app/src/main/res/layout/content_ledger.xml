@@ -44,11 +44,7 @@
                 android:textColor="@color/colorBlack"
                 android:layout_weight="1"/>
         </LinearLayout>
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_list"
@@ -59,7 +55,7 @@
             android:layout_gravity="center"
             android:paddingBottom="50dp"
             android:scrollbars="none"/>
-        </android.support.v4.widget.SwipeRefreshLayout>
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

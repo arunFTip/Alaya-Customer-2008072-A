@@ -1,5 +1,6 @@
 package com.ftipinfosol.alayachits;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -48,6 +49,7 @@ public class OptionActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     EditText newChitRequestAmount;
+    private ProgressDialog dialog;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -56,20 +58,16 @@ public class OptionActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_passbook:
-                    startActivity(new Intent(getApplicationContext(), PassbookActivity.class).putExtra("ticket", String.valueOf(ticket)));
-                    return true;
-//                case R.id.navigation_report:
-//                    startActivity(new Intent(getApplicationContext(), ReportsActivity.class).putExtra("ticket", String.valueOf(ticket)));
-//                    return true;
                 case R.id.navigation_profile:
                     startActivity(new Intent(getApplicationContext(), ChitActivity.class).putExtra("ticket", String.valueOf(ticket)));
                     return true;
-
+                case R.id.navigation_options:
+                    return true;
                 case R.id.navigation_ledger_extract:
                     startActivity(new Intent(getApplicationContext(), LedgerExtract.class).putExtra("ticket",String.valueOf(ticket)));
                     return true;
-                case R.id.navigation_options:
+                case R.id.navigation_passbook:
+                    startActivity(new Intent(getApplicationContext(), PassbookActivity.class).putExtra("ticket", String.valueOf(ticket)));
                     return true;
             }
             return false;
@@ -92,17 +90,29 @@ public class OptionActivity extends AppCompatActivity {
             tiid = ticket.getString("tiid");
             Log.e("printticket", tiid + "print"+ ticket.toString());
             setSupportActionBar(toolbar);
-            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+//            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setDisplayShowHomeEnabled(true);
         } catch (JSONException e) {
             e.printStackTrace();
             finish();
         }
 
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+//            }
+//        });
+
         mSwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
 
         newChitRequestAmount = findViewById(R.id.chit_request_amount);
+
+        dialog = new ProgressDialog(this);
+        dialog.setCancelable(false);
     }
+
+
 
     public void payment_request(View view) {
         //Toast.makeText(getApplicationContext(), "TEst", Toast.LENGTH_SHORT).show();
@@ -128,11 +138,11 @@ public class OptionActivity extends AppCompatActivity {
                     try {
                         JSONObject errors = response.getJSONObject("errors");
                         Log.e("paymentRequestReturnFai", "in error - "+ errors.toString());
-                        Toast.makeText(getApplicationContext(), errors.getString("tiid"), Toast.LENGTH_SHORT).show();
-//                        if(errors.has("tiid"))
-//                        {
-//                            Toast.makeText(getApplicationContext(), errors.getString("tiid"), Toast.LENGTH_SHORT).show();
-//                        }
+                        //Toast.makeText(getApplicationContext(), errors.getString("tiid"), Toast.LENGTH_SHORT).show();
+                        if(errors.has("tiid"))
+                        {
+                            Toast.makeText(getApplicationContext(), errors.getJSONArray("tiid").getString(0), Toast.LENGTH_SHORT).show();
+                        }
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
@@ -209,9 +219,13 @@ public class OptionActivity extends AppCompatActivity {
         client.addHeader("Accept", "application/json");
         client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
 
+        dialog.setMessage("Loading...");
+        dialog.show();
+
         client.get(Config.DOWNLOAD_STATEMENT+tiid, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                dialog.dismiss();
                 Log.e("downloadRequestReturn", response.toString());
                 String _filename="test";
                 try {
@@ -227,7 +241,8 @@ public class OptionActivity extends AppCompatActivity {
                     e1.printStackTrace();
                 }
 
-                String _url = "http://192.168.1.6:8000/ledger_view_statement/"+_filename;
+                //String _url = "http://192.168.1.6:8000/ledger_view_statement/"+_filename;
+                String _url = Config.DOWNLOAD_STATEMENT_URL+_filename;
 
                 HttpCache.write(getApplicationContext(), "report"+params, String.valueOf(response));
                 Toast.makeText(getApplicationContext(), "Download request sent successfully", Toast.LENGTH_SHORT).show();
@@ -240,6 +255,7 @@ public class OptionActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
+                dialog.dismiss();
                 Log.e("downloadRequestRetFai", response.toString());
             }
 
@@ -295,8 +311,16 @@ public class OptionActivity extends AppCompatActivity {
             case R.id.action_contact:
                 startActivity(new Intent(this, ContactAcivity.class));
                 return true;
+            case R.id.action_privacy_policy:
+                startActivity(new Intent(this,PrivacyPolicyActivity.class));
+                return true;
+            case R.id.action_terms_conditions:
+                startActivity(new Intent(this,TermsConditionsActivity.class));
+                return true;
+            case R.id.action_refund_cancellation:
+                startActivity(new Intent(this,ReturnRefundActivity.class));
+                return true;
             default:
-                finish();
                 return super.onOptionsItemSelected(item);
         }
     }

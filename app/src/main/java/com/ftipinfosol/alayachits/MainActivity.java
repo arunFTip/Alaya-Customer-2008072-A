@@ -22,20 +22,20 @@ public class MainActivity extends AppCompatActivity {
         if (intent.hasExtra("logout")) {
             logout(sp);
         }
-//        if (sp.contains("TOKEN")) {
-//            try {
-//                AUTH_USER = new JSONObject(sp.getString("TOKEN", ""));
-//                AUTH_TOKEN = "Bearer "+AUTH_USER.getString("token");
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
+        if (sp.contains("TOKEN")) {
+            try {
+                AUTH_USER = new JSONObject(sp.getString("TOKEN", ""));
+                AUTH_TOKEN = "Bearer "+AUTH_USER.getString("token");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             startActivity(new Intent(getApplicationContext(),HomeActivity.class));
             finish();
-//        }
-//        else{
-//            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-//            finish();
-//        }
+        }
+        else{
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            finish();
+        }
     }
 
     public void logout(SharedPreferences sp) {

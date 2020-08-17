@@ -10,9 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.ftipinfosol.alayachits.Adapters.HttpCache;
 import com.ftipinfosol.alayachits.Adapters.PaymentsAdapter;
@@ -44,7 +46,7 @@ public class PassbookActivity extends AppCompatActivity {
     private boolean refresh = false;
 
     private ProgressDialog dialog;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    //private SwipeRefreshLayout mSwipeRefreshLayout;
     RecyclerView recyclerView;
     private PaymentsAdapter adapter;
     private List<JSONObject> payment_list = new ArrayList<>();
@@ -55,18 +57,14 @@ public class PassbookActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-
-//                case R.id.navigation_report:
-//                    startActivity(new Intent(PassbookActivity.this, ReportsActivity.class).putExtra("ticket", String.valueOf(ticket)));
-//                    return true;
                 case R.id.navigation_profile:
-                    startActivity(new Intent(PassbookActivity.this, ChitActivity.class).putExtra("ticket", String.valueOf(ticket)));
+                    startActivity(new Intent(getApplicationContext(), ChitActivity.class).putExtra("ticket", String.valueOf(ticket)));
                     return true;
                 case R.id.navigation_options:
-                    startActivity(new Intent(PassbookActivity.this, OptionActivity.class).putExtra("ticket", String.valueOf(ticket)));
+                    startActivity(new Intent(getApplicationContext(), OptionActivity.class).putExtra("ticket", String.valueOf(ticket)));
                     return true;
                 case R.id.navigation_ledger_extract:
-                    startActivity(new Intent(PassbookActivity.this, LedgerExtract.class).putExtra("ticket",String.valueOf(ticket)));
+                    startActivity(new Intent(getApplicationContext(), LedgerExtract.class).putExtra("ticket",String.valueOf(ticket)));
                     return true;
                 case R.id.navigation_passbook:
                     return true;
@@ -87,17 +85,26 @@ public class PassbookActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         try {
             ticket = new JSONObject(getIntent().getStringExtra("ticket"));
+            Log.e("passinglogP",ticket.toString());
             toolbar.setTitle("Passbook : "+(ticket.getString("ticket_code").length()>0?ticket.getString("ticket_code"):ticket.getString("temp_id")));
             tiid = ticket.getString("tiid");
             setSupportActionBar(toolbar);
-            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+//            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setDisplayShowHomeEnabled(true);
         } catch (JSONException e) {
+            Log.e("passinglogPE",e.toString());
             e.printStackTrace();
             finish();
         }
 
-        mSwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+//            }
+//        });
+
+        //mSwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         adapter = new PaymentsAdapter(payment_list);
         recyclerView = findViewById(R.id.recycler_list);
         recyclerView.setHasFixedSize(true);
@@ -107,54 +114,58 @@ public class PassbookActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         prepareData();
 
-        recyclerView.addOnScrollListener(new EndlessScroll() {
-            @Override
-            public void onLoadMore() {
-                prepareData();
-            }
-        });
+//        recyclerView.addOnScrollListener(new EndlessScroll() {
+//            @Override
+//            public void onLoadMore() {
+//                prepareData();
+//            }
+//        });
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh = true;
-                payment_list.clear();
-                count = 0;
-                isLoading = false;
-                completed = false;
-                prepareData();
-            }
-        });
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                refresh = true;
+//                payment_list.clear();
+//                count = 0;
+//                isLoading = false;
+//                completed = false;
+//                prepareData();
+//            }
+//        });
     }
 
+
+
     private void prepareData() {
-        if(completed||isLoading){return;}
-        else
-        { isLoading=true;}
+//        if(completed||isLoading){return;}
+//        else
+//        { isLoading=true;}
+
         dialog.setMessage("Loading...");
         dialog.show();
         count=payment_list.size();
-        params.put("skip", payment_list.size());
+        //params.put("skip", payment_list.size());
         params.put("tiid", tiid);
         client.addHeader("Accept", "application/json");
         client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
 
-        try {
-            if(!refresh)
-            {
-                JSONArray response = new JSONArray(HttpCache.read(getApplicationContext(), "ledger"+params));
-                process_data(response);
-                return;
-            }
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            if(!refresh)
+//            {
+//                JSONArray response = new JSONArray(HttpCache.read(getApplicationContext(), "ledger"+params));
+//                process_data(response);
+//                Log.e("passbooklog",response.toString());
+//                return;
+//            }
+//        } catch (JSONException | IOException e) {
+//            e.printStackTrace();
+//        }
 
         client.get(Config.LEDGER_URL, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 process_data(response);
-                HttpCache.write(getApplicationContext(), "ledger"+params, String.valueOf(response));
+                //HttpCache.write(getApplicationContext(), "ledger"+params, String.valueOf(response));
             }
 
             @Override
@@ -167,10 +178,10 @@ public class PassbookActivity extends AppCompatActivity {
 
     public void process_data(JSONArray response)
     {
-        if(refresh)
-        {
-            adapter.notifyDataSetChanged();
-        }
+//        if(refresh)
+//        {
+//            adapter.notifyDataSetChanged();
+//        }
         if (response != null) {
             for (int i = 0; i < response.length(); i++) {
                 try {
@@ -185,7 +196,7 @@ public class PassbookActivity extends AppCompatActivity {
                 completed = true;
             }
             isLoading=false;
-            mSwipeRefreshLayout.setRefreshing(false);
+            //mSwipeRefreshLayout.setRefreshing(false);
             adapter.notifyItemRangeInserted(count, payment_list.size());
         }
         dialog.dismiss();
@@ -205,8 +216,16 @@ public class PassbookActivity extends AppCompatActivity {
             case R.id.action_contact:
                 startActivity(new Intent(this, ContactAcivity.class));
                 return true;
+            case R.id.action_privacy_policy:
+                startActivity(new Intent(this,PrivacyPolicyActivity.class));
+                return true;
+            case R.id.action_terms_conditions:
+                startActivity(new Intent(this,TermsConditionsActivity.class));
+                return true;
+            case R.id.action_refund_cancellation:
+                startActivity(new Intent(this,ReturnRefundActivity.class));
+                return true;
             default:
-                finish();
                 return super.onOptionsItemSelected(item);
         }
     }
