@@ -9,6 +9,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_how_chit_works"
+        android:orderInCategory="100"
+        android:title="@string/how_chit_works"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_privacy_policy"
         android:orderInCategory="100"
         android:title="@string/privacy_policy"

@@ -162,6 +162,9 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.action_schemes:
                 startActivity(new Intent(this, SchemesActivity.class));
                 return true;
+            case R.id.action_how_chit_works:
+                startActivity(new Intent(this, HowChitWorks.class));
+                return true;
             case R.id.action_contact:
                 startActivity(new Intent(this, ContactAcivity.class));
                 return true;

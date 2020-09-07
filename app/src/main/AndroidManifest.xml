@@ -22,6 +22,10 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
+        <activity
+            android:name=".HowChitWorks"
+            android:label="@string/title_activity_contact_acivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".PrivacyPolicyActivity"
@@ -96,6 +100,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove" />
+
 
 </manifest>

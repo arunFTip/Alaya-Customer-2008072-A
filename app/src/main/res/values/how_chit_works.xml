@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--About Text-->
+    <string name="how_chit_string" translatable="false">
+        <![CDATA[
+
+            <br/>
+            <b>WHAT IS CHIT FUND AND HOW DOES IT WORK?</b><br/>
+            <p>Chit fund is defined as per the Section 2(b) of the Chit Fund Act, 1982. According to this act; A chit fund is a type of rotating savings and agreement among different persons i.e. friends, relatives, neighbours and family members to subscribe a certain sum of money for a specified period of time. Chit funds are often microfinance organizations. Chit Funds are also known as the Chitty, Kuree, chit.</p>
+            <p>It is worth to mention that there are over 10,000 registered chit funds in India.</p>
+
+
+            <b>WHY CHIT FUND ?</b><br/>
+            <p>Chit funds have been playing a stellar role even before the advent of modern banking era, in coming to rescue of the needy at affordable terms.</p>
+            <p>This system has numerous built-in advantages due to which people prefer this option over other formal institutions. These are: Tax Free Dividend - Easy Accessibility - User-friendly service - Absence of latent cost - No Periodic interest hikes - Exit Options with nominal charges</p>
+            <p>“The subscribers trust us to take care of their hard-earned money and realize, they can bank on us when in urgent need of funds for any purpose, be it Medical, Education, Marriage, House Purchase, Travel etc.,” says Mr. M.V. Vaidyanathan, Director. He adds that “Though chit fund is equally popular across all categories, whether salaried, business or even housewife, it is the Small & medium entrepreneurs who reap the maximum benefits of chit funds for their business start-up, expansion as well as working capital, as unlike banks, we are much more supportive and understand their needs and try to service it in a quick & efficient manner”.</p>
+            <p>“Other frequent users of this financial intermediary, he continues, are those who get access to finance from banks & other institutions but need chit funds for the purpose of margin money, down payment, seed money etc, as banks & other financiers seldom grant loan for the full amount. This tool is of immense benefit for those who have the repayment capacity but are stuck due to some dumb policies of banks. So chit funds act as Step 1 for availing other loans”.</p>
+
+
+            <b>HOW CHIT FUND HELPS?</b><br/>
+            <p>Chit Funds have the advantage both for serving a need and as an investment. Money can be readily drawn in an emergency or could be continued as an investment.</p>
+            <p>Interest rate is determined by the subscribers themselves, based on mutual decisions and varies from auction to auction.</p>
+            <p>The money that you borrow is against your own future contributions.</p>
+            <p>The amount is given on personal sureties too; unlike in banks and other financial institutions which demand a tangible security.</p>
+            <p>Chit funds can be relied upon to satisfy personal needs. Unlike other financial institutions, you can draw upon your chit fund for any purpose – marriages, religious functions, medical expenses, children’s education, etc.</p>
+            <p>Cost of intermediation is the lowest.</p>
+            <p>Chit fund is a saving cum borrowing instrument, which is unique when compared to other financial systems. When you invest in chits you get more return as compared to other Financial Intermediaries and when you borrow you pay less interest?</p>
+            <b>Benefits</b>
+            <p><b>Hindsight Benefit:</b> <b>Banks & other FI - </b> None. Choose between savings and borrowing options – Whether Savings, FD or Loans  <b>Chit Fund - </b>Yes, with the 2-in-1 advantage. Start as savings and convert into a borrowing instrument, if and when required.</p>
+            <p><b>Freedom to use funds:</b> <b>Banks & other FI - </b> Restricted. Loan is for specified purpose – be it home-loan, vehicle, business etc. <b>Chit Fund - </b>Absolute. Subscriber has the freedom to use the funds as per will.</p>
+            <p><b>Rate of Interest on borrowing:</b> <b>Banks & other FI - </b>High. The Banks & other NBFC borrow money at interest, add service charges and lend at higher rates.  <b>Chit Fund - </b>Low. Since the chit funds work under the principle of mutuality, you borrow from your future savings.</p>
+            <p><b>Rate of Return on Savings:</b> <b>Banks & other FI - </b>Low. As cost of operations is very high and also the prevailing interest rate is a factor <b>Chit Fund - </b>High. Risk free when compared to any other financial intermediary.</p>
+            <p><b>Tax:</b> <b>Banks & other FI - </b> Applicable. The interest earned from Savings a/c, FDs, etc is subject to Tax. <b>Chit Fund - </b>Tax-free. Dividend earned in the normal course is exempt From Tax.</p>
+
+
+        ]]>
+    </string>
+
+</resources>

@@ -2,13 +2,13 @@ package com.ftipinfosol.alayachits;
 
 public class Config {
 
-    private static String BASE_URL = "http://alaya-stag-2008071.sf3.in/api/customers_api_v2/";
-    public static String DOWNLOAD_STATEMENT_URL = "http://alaya-stag-2008071.sf3.in/ledger_view_statement/";
+//    private static String BASE_URL = "http://alaya-stag-2008071.sf3.in/api/customers_api_v2/";
+//    public static String DOWNLOAD_STATEMENT_URL = "http://alaya-stag-2008071.sf3.in/ledger_view_statement/";
 //    private static String BASE_URL = "http://192.168.1.6:8000/api/customers_api_v2/";
 //    public static String DOWNLOAD_STATEMENT_URL = "http://192.168.1.6:8000/ledger_view_statement/";
 
-
-    //private static String BASE_URL = "http://app.sreealayachits.com/api/customers_api_v2/";
+    private static String BASE_URL = "http://app.sreealayachits.com/api/customers_api_v2/";
+    public static String DOWNLOAD_STATEMENT_URL = "http://app.sreealayachits.com/ledger_view_statement/";
 
     public static String OTP_URL = BASE_URL+"get_otp";
     public static String VERIFY_URL = BASE_URL+"verify_otp";

@@ -1,0 +1,5 @@
+Key store password - 123456
+Key alias - Key0
+Key password - 123456
+
+Key file name - alaya_client_key.jks

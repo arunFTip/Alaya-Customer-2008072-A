@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ReturnRefundActivity"
-    tools:showIn="@layout/activity_contact">
+    tools:showIn="@layout/activity_how_chit_works">
 
     <ScrollView
         android:id="@+id/scroll"
@@ -22,7 +22,7 @@
 
             <TextView
                 android:padding="10dp"
-                android:id="@+id/txt_how_chit_works"
+                android:id="@+id/txt_return_refund"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/amount"/>
