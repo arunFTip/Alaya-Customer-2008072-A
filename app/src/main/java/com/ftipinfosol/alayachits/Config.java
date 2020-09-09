@@ -4,8 +4,8 @@ public class Config {
 
 //    private static String BASE_URL = "http://alaya-stag-2008071.sf3.in/api/customers_api_v2/";
 //    public static String DOWNLOAD_STATEMENT_URL = "http://alaya-stag-2008071.sf3.in/ledger_view_statement/";
-//    private static String BASE_URL = "http://192.168.1.6:8000/api/customers_api_v2/";
-//    public static String DOWNLOAD_STATEMENT_URL = "http://192.168.1.6:8000/ledger_view_statement/";
+//      private static String BASE_URL = "http://192.168.1.6:8000/api/customers_api_v2/";
+//      public static String DOWNLOAD_STATEMENT_URL = "http://192.168.1.6:8000/ledger_view_statement/";
 
     private static String BASE_URL = "http://app.sreealayachits.com/api/customers_api_v2/";
     public static String DOWNLOAD_STATEMENT_URL = "http://app.sreealayachits.com/ledger_view_statement/";

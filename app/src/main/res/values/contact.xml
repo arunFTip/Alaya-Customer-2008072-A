@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--About Text-->
+    <string name="contact_string" translatable="false">
+        <![CDATA[
+
+            <br/>
+            <b>Head Office:</b>
+            <p>No.80, kamatchi Amman kovil street, Old bus stand,  Tirupur- 641604.</p>
+            <br/>
+            <b>Branch Office:</b>
+            <p>No.32, Tirupathi vengadachelapathy nagar, Nava India,  Coimbatore 641004.</p>
+
+            <b>E-Mail ID:</b>
+            <p>alayachits@gmail.com</p>
+
+        ]]>
+    </string>
+
+</resources>

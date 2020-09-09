@@ -166,6 +166,14 @@
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
+        <TextView
+            android:padding="20dp"
+            android:id="@+id/txt_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"/>
+
     </LinearLayout>
     </ScrollView>
 
