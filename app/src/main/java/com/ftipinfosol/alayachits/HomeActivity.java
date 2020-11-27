@@ -5,11 +5,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -103,7 +103,7 @@ public class HomeActivity extends AppCompatActivity {
         dialog.setMessage("Loading...");
         dialog.show();
 
-        Log.e("homeactivitylog", MainActivity.AUTH_TOKEN);
+        //Log.e("homeactivitylog", MainActivity.AUTH_TOKEN);
 
         client.addHeader("Accept", "application/json");
         client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
@@ -119,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable err, JSONObject error) {
                 err.printStackTrace();
                 try {
-                    Log.e("getTicketFailure", error.toString());
+                    //Log.e("getTicketFailure", error.toString());
                     //dialog.dismiss();
                     JSONArray response = new JSONArray(HttpCache.read(getApplicationContext(), "ticket"+params));
                     process_data(response);

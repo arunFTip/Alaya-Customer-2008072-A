@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">SREE ALAYA CHITS</string>
+    <string name="app_care_bug_log_debug">1</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_home">HomeActivity</string>
@@ -45,6 +46,7 @@
     <string name="payment_request">Send Payment Request</string>
     <string name="download_statement">Download Statement</string>
     <string name="chit_request">Send New Chit Request</string>
+    <string name="make_payment">Make Payment</string>
 
     <!--    menu main-->
     <string name="schemes">Schemes</string>

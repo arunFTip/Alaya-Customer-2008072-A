@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".OptionActivity"
     tools:showIn="@layout/activity_options">
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
@@ -56,6 +56,51 @@
                     android:onClick="download_statement" />
             </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+
+                    android:orientation="vertical"
+                    android:focusable="true" android:focusableInTouchMode="true">
+
+                    <TextView
+                        android:layout_margin="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Enter new chit amount"/>
+                    <EditText
+                        android:layout_margin="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number"
+                        android:id="@+id/payment_amount"/>
+                    <Button
+                        android:layout_margin="15dp"
+                        android:id="@+id/make_payment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:textSize="15sp"
+                        android:background="@color/colorGreen"
+                        android:textColor="@color/colorWhite"
+                        android:text="@string/make_payment"
+                        android:onClick="make_payment" />
+                    <TextView
+                        android:layout_margin="15dp"
+                        android:id="@+id/tvPaytmResponse"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=""/>
+                    <TextView
+                        android:layout_margin="15dp"
+                        android:id="@+id/tvPaytmResponseAddPaymentInSoftware"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=""/>
+
+                </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,6 +135,6 @@
             </LinearLayout>
             </LinearLayout>
         </ScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
