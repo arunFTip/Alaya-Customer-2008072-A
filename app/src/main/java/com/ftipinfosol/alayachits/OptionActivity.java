@@ -11,7 +11,9 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,16 +63,21 @@ public class OptionActivity extends AppCompatActivity{
     private ProgressDialog dialog;
     private ProgressDialog dialogPayTM;
 
+    Button btnSendPaymentRequest, btnMakePayment;
+    LinearLayout llMakePayment;
+
     private String  TAG ="OptionActivity";
     private Integer ActivityRequestCode = 2;
-    private String midString ="eWrKgz59911424619072", txnAmountString="", orderIdString="", txnTokenString="";
+    private String midString ="JbSYXr73122233302720", txnAmountString="", orderIdString="", txnTokenString="";
     EditText etPaymentAmount;
+
+    //PayTm production change midString & String host; Prod - JbSYXr73122233302720; Test - eWrKgz59911424619072
 
     TextView tvPaytmResponse, tvPaytmResponseAddPaymentInSoftware;
     String mPaytmResponse, mPaytmResponseAddPaymentInSoftware;
 
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListenerCool
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -96,12 +103,15 @@ public class OptionActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        BottomNavigationView navView = findViewById(R.id.nav_view_optionsActivity);
         navView.setSelectedItemId(R.id.navigation_options);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListenerCool);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        btnMakePayment = findViewById(R.id.make_payment);
+        btnSendPaymentRequest = findViewById(R.id.payment_request);
+        llMakePayment = findViewById(R.id.llMakePayment);
         try {
             ticket = new JSONObject(getIntent().getStringExtra("ticket"));
             toolbar.setTitle("Options : "+(ticket.getString("ticket_code").length()>0?ticket.getString("ticket_code"):ticket.getString("temp_id")));
@@ -111,6 +121,12 @@ public class OptionActivity extends AppCompatActivity{
             setSupportActionBar(toolbar);
 //            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 //            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+            if(ticket.getString("closed_status").equals("1")){
+                btnSendPaymentRequest.setVisibility(View.INVISIBLE);
+                //btnMakePayment.setVisibility(View.INVISIBLE);
+                llMakePayment.setVisibility(View.INVISIBLE);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
             finish();
@@ -265,9 +281,9 @@ public class OptionActivity extends AppCompatActivity{
     public void startPaytmPayment (String token){
         txnTokenString = token;
         // for test mode use it
-        String host = "https://securegw-stage.paytm.in/";//commented
+        //String host = "https://securegw-stage.paytm.in/";//commented
         // for production mode use it
-        //String host = "https://securegw.paytm.in/";
+        String host = "https://securegw.paytm.in/";
         String orderDetails = "MID: " + midString + ", OrderId: " + orderIdString + ", TxnToken: " + txnTokenString
                 + ", Amount: " + txnAmountString;
         //Log.e(TAG, "order details "+ orderDetails);
@@ -282,6 +298,7 @@ public class OptionActivity extends AppCompatActivity{
                 //Toast.makeText(getApplicationContext(), "Payment has been completed successfully", Toast.LENGTH_LONG).show();
 
                 String respMsg =bundle.getString("RESPMSG");
+                String txnID = bundle.getString("TXNID");
                 Log.e("OptionActivity", "RESPMSG : "+ respMsg);
                 tvPaytmResponse.setText(mPaytmResponse+ respMsg);
                 tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware+"Updating...");
@@ -293,6 +310,7 @@ public class OptionActivity extends AppCompatActivity{
                         params.put("tiid", tiid);
                         params.put("cuid", cuid);
                         params.put("amount", txnAmountString);
+                        params.put("trans_id", txnID);
                         client.addHeader("Accept", "application/json");
                         client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
 
@@ -465,7 +483,7 @@ public class OptionActivity extends AppCompatActivity{
             }
         });
         transactionManager.setShowPaymentUrl(host + "theia/api/v1/showPaymentPage");
-        transactionManager.startTransaction(this, ActivityRequestCode);
+        transactionManager.startTransaction(OptionActivity.this, ActivityRequestCode);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -480,6 +498,7 @@ public class OptionActivity extends AppCompatActivity{
                     Log.e(TAG, key + " : " + (bundle.get(key) != null ? bundle.get(key) : "NULL"));
                 }
             }
+            Log.e(TAG, "Data all "+ data.toString());
             Log.e(TAG, " data "+  data.getStringExtra("nativeSdkForMerchantMessage"));
             Log.e(TAG, " data response - "+data.getStringExtra("response"));
 /*
@@ -587,15 +606,25 @@ public class OptionActivity extends AppCompatActivity{
                     e1.printStackTrace();
                 }
 
+
                 //String _url = "http://192.168.1.6:8000/ledger_view_statement/"+_filename;
                 String _url = Config.DOWNLOAD_STATEMENT_URL+_filename;
+                //_url = "http://test4.sf3.in/ledger_view_statement/Statement_A1B-1-2.pdf";
+                Log.e("URL", _url);
+
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(_url));
+                startActivity(browserIntent);
+
+                //PDFTools.showPDFUrl(OptionActivity.this, _url);
+
+                //new DownloadTask(OptionActivity.this, _url);
 
                 HttpCache.write(getApplicationContext(), "report"+params, String.valueOf(response));
-                Toast.makeText(getApplicationContext(), "Download request sent successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Downloaded successfully", Toast.LENGTH_SHORT).show();
                 //new DownloadFile().execute("http://192.168.1.6:8000/ledger_view_statement/Statement_A1C-6-7.pdf", "Statement_A1C.pdf");
-                new DownloadFile().execute(_url, _filename);
+                //new DownloadFile().execute(_url, _filename);
                 //showPdf("AlayaChits","Statement_A1C.pdf" );
-                showPdf("AlayaChits",_filename );
+                //showPdf("AlayaChits",_filename );
 
             }
 
@@ -609,45 +638,45 @@ public class OptionActivity extends AppCompatActivity{
 
     }
 
-    private class DownloadFile extends AsyncTask<String, Void, Void> {
-
-        @Override
-        protected Void doInBackground(String... strings) {
-            String fileUrl = strings[0];   // -> http://maven.apache.org/maven-1.x/maven.pdf
-            String fileName = strings[1];  // -> maven.pdf
-            String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-            File folder = new File(extStorageDirectory, "AlayaChits");
-            folder.mkdir();
-
-            File pdfFile = new File(folder, fileName);
-
-            try{
-                pdfFile.createNewFile();
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            FileDownloader.downloadFile(fileUrl, pdfFile);
-            return null;
-        }
-    }
-
-    public void showPdf(String folder, String filename)
-    {
-        //File file = new File(Environment.getExternalStorageDirectory()+"/pdf/Read.pdf");
-        File file = new File(Environment.getExternalStorageDirectory()+"//"+folder+"//"+filename);
-        //File file = new File("/storage/emulated/0/AlayaChits/Statement_A1C.pdf");
-        PackageManager packageManager = getPackageManager();
-        Intent testIntent = new Intent(Intent.ACTION_VIEW);
-        testIntent.setType("application/pdf");
-        List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        //Uri uri = Uri.fromFile(file);
-        Uri uri = FileProvider.getUriForFile(OptionActivity.this,BuildConfig.APPLICATION_ID + ".provider", file);
-        intent.setDataAndType(uri, "application/pdf");
-        startActivity(intent);
-    }
+//    private class DownloadFile extends AsyncTask<String, Void, Void> {
+//
+//        @Override
+//        protected Void doInBackground(String... strings) {
+//            String fileUrl = strings[0];   // -> http://maven.apache.org/maven-1.x/maven.pdf
+//            String fileName = strings[1];  // -> maven.pdf
+//            String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+//            File folder = new File(extStorageDirectory, "AlayaChits");
+//            folder.mkdir();
+//
+//            File pdfFile = new File(folder, fileName);
+//
+//            try{
+//                pdfFile.createNewFile();
+//            }catch (IOException e){
+//                e.printStackTrace();
+//            }
+//            FileDownloader.downloadFile(fileUrl, pdfFile);
+//            return null;
+//        }
+//    }
+//
+//    public void showPdf(String folder, String filename)
+//    {
+//        //File file = new File(Environment.getExternalStorageDirectory()+"/pdf/Read.pdf");
+//        File file = new File(Environment.getExternalStorageDirectory()+"//"+folder+"//"+filename);
+//        //File file = new File("/storage/emulated/0/AlayaChits/Statement_A1C.pdf");
+//        PackageManager packageManager = getPackageManager();
+//        Intent testIntent = new Intent(Intent.ACTION_VIEW);
+//        testIntent.setType("application/pdf");
+//        List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_VIEW);
+//        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        //Uri uri = Uri.fromFile(file);
+//        Uri uri = FileProvider.getUriForFile(OptionActivity.this,BuildConfig.APPLICATION_ID + ".provider", file);
+//        intent.setDataAndType(uri, "application/pdf");
+//        startActivity(intent);
+//    }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -670,4 +699,6 @@ public class OptionActivity extends AppCompatActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }

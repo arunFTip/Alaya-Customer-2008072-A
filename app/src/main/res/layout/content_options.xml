@@ -26,61 +26,29 @@
                 android:orientation="vertical"
                 android:focusable="true" android:focusableInTouchMode="true">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:focusable="true" android:focusableInTouchMode="true">
-
-                <Button
-                    android:layout_margin="15dp"
-                    android:id="@+id/payment_request"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:textSize="15sp"
-                    android:background="@color/colorAccent"
-                    android:textColor="@color/colorWhite"
-                    android:text="@string/payment_request"
-                    android:onClick="payment_request" />
-                <Button
-                    android:layout_margin="15dp"
-                    android:id="@+id/download_statement"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:textSize="15sp"
-                    android:background="@color/colorAccent"
-                    android:textColor="@color/colorWhite"
-                    android:text="@string/download_statement"
-                    android:onClick="download_statement" />
-            </LinearLayout>
-
                 <LinearLayout
+                    android:id="@+id/llMakePayment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="100dp"
-
                     android:orientation="vertical"
                     android:focusable="true" android:focusableInTouchMode="true">
 
                     <TextView
-                        android:layout_margin="15dp"
+                        android:layout_margin="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Enter new chit amount"/>
+                        android:text="Enter collection amount"/>
                     <EditText
-                        android:layout_margin="15dp"
+                        android:layout_margin="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="number"
                         android:id="@+id/payment_amount"/>
                     <Button
-                        android:layout_margin="15dp"
+                        android:layout_margin="10dp"
                         android:id="@+id/make_payment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
                         android:textSize="15sp"
                         android:background="@color/colorGreen"
                         android:textColor="@color/colorWhite"
@@ -104,24 +72,53 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:orientation="vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
+                <Button
+                    android:layout_margin="10dp"
+                    android:id="@+id/payment_request"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/payment_request"
+                    android:onClick="payment_request" />
+                <Button
+                    android:layout_margin="10dp"
+                    android:id="@+id/download_statement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/download_statement"
+                    android:onClick="download_statement" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:focusable="true" android:focusableInTouchMode="true">
 
                 <TextView
-                    android:layout_margin="15dp"
+                    android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Enter new chit amount"/>
                 <EditText
-                    android:layout_margin="15dp"
+                    android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
                     android:id="@+id/chit_request_amount"/>
                 <Button
-                    android:layout_margin="15dp"
+                    android:layout_margin="10dp"
                     android:id="@+id/chit_request"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

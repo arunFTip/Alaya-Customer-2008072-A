@@ -108,7 +108,7 @@ public class PassbookActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
-        //prepareData();        //uncomment before live
+        prepareData();        //uncomment before live
 
 //        recyclerView.addOnScrollListener(new EndlessScroll() {
 //            @Override
@@ -231,5 +231,6 @@ public class PassbookActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
 }

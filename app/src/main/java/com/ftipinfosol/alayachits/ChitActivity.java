@@ -198,4 +198,6 @@ public class ChitActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }

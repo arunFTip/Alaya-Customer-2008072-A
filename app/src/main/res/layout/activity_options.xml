@@ -26,8 +26,13 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
+        <include
+            layout="@layout/content_options"
+            app:layout_anchor="@+id/container"
+            app:layout_anchorGravity="center" />
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/nav_view"
+            android:id="@+id/nav_view_optionsActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
@@ -42,9 +47,6 @@
 
     </FrameLayout>
 
-    <include
-        layout="@layout/content_options"
-        app:layout_anchor="@+id/container"
-        app:layout_anchorGravity="center" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
