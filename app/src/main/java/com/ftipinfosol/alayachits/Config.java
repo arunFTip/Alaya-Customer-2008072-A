@@ -9,8 +9,10 @@ public class Config {
 
 
     //private static String URL = "http://192.168.1.14:8000/";
+    //private static String URL = "http://test4.sf3.in/";
 
-    private static String URL = "http://test4.sf3.in/";
+    private static String URL = "http://app.sreealayachits.com/";
+
     private static String BASE_URL = URL + "api/customers_api_v2/";
     public static String DOWNLOAD_STATEMENT_URL = URL+ "ledger_view_statement/";
 
@@ -35,5 +37,7 @@ public class Config {
 
     public static String GET_PAYTM_CHECKSM = URL +"BlueInitiateTransaction.php";
     public static String PAYTM_COLLECTION = BASE_URL+"savePaytmCollection";
+
+    //added now - 11-01-2021 - 6:11 pm
 
 }

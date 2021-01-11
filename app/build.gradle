@@ -1,13 +1,15 @@
 apply plugin: 'com.android.application'
+// Add the following line:
+apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.ftipinfosol.alayachits"
         minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 7
-        versionName "7"
+        targetSdkVersion 29
+        versionCode 9
+        versionName "9"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -32,6 +34,14 @@ dependencies {
     implementation 'com.paytm.appinvokesdk:appinvokesdk:1.5.3'
 
     implementation 'com.github.f0ris.sweetalert:library:1.5.6'
+
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:26.2.0')
+
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+
+    // Declare the dependency for the Firebase SDK for Google Analytics
+    implementation 'com.google.firebase:firebase-analytics'
 
 
     testImplementation 'junit:junit:4.12'

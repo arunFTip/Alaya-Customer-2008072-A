@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "549603869169",
+    "project_id": "alayacustomer",
+    "storage_bucket": "alayacustomer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549603869169:android:f09f8c297dd316a1fc4450",
+        "android_client_info": {
+          "package_name": "com.ftipinfosol.alayachits"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549603869169-0h6gham7krftcijd64igmvbnr8us19k5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6BRzMoqKx9H0z5-_lLJnHs4vSAFQ3en4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549603869169-0h6gham7krftcijd64igmvbnr8us19k5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
