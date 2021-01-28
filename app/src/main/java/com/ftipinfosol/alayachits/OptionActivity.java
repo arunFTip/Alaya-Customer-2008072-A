@@ -49,7 +49,7 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
 
-public class OptionActivity extends AppCompatActivity{
+public class OptionActivity extends AppCompatActivity {
     JSONObject ticket;
     String tiid, cuid;
     private RequestParams params = new RequestParams();
@@ -66,9 +66,9 @@ public class OptionActivity extends AppCompatActivity{
     Button btnSendPaymentRequest, btnMakePayment;
     LinearLayout llMakePayment;
 
-    private String  TAG ="OptionActivity";
+    private String TAG = "OptionActivity";
     private Integer ActivityRequestCode = 2;
-    private String midString ="JbSYXr73122233302720", txnAmountString="", orderIdString="", txnTokenString="";
+    private String midString = "JbSYXr73122233302720", txnAmountString = "", orderIdString = "", txnTokenString = "";
     EditText etPaymentAmount;
 
     //PayTm production change midString & String host; Prod - JbSYXr73122233302720; Test - eWrKgz59911424619072
@@ -89,7 +89,7 @@ public class OptionActivity extends AppCompatActivity{
                 case R.id.navigation_options:
                     return true;
                 case R.id.navigation_ledger_extract:
-                    startActivity(new Intent(getApplicationContext(), LedgerExtract.class).putExtra("ticket",String.valueOf(ticket)));
+                    startActivity(new Intent(getApplicationContext(), LedgerExtract.class).putExtra("ticket", String.valueOf(ticket)));
                     return true;
                 case R.id.navigation_passbook:
                     startActivity(new Intent(getApplicationContext(), PassbookActivity.class).putExtra("ticket", String.valueOf(ticket)));
@@ -114,15 +114,15 @@ public class OptionActivity extends AppCompatActivity{
         llMakePayment = findViewById(R.id.llMakePayment);
         try {
             ticket = new JSONObject(getIntent().getStringExtra("ticket"));
-            toolbar.setTitle("Options : "+(ticket.getString("ticket_code").length()>0?ticket.getString("ticket_code"):ticket.getString("temp_id")));
+            toolbar.setTitle("Options : " + (ticket.getString("ticket_code").length() > 0 ? ticket.getString("ticket_code") : ticket.getString("temp_id")));
             tiid = ticket.getString("tiid");
             cuid = ticket.getString("cuid");
-            Log.e("printticket", tiid + "print"+ ticket.toString());
+            Log.e("printticket", tiid + "print" + ticket.toString());
             setSupportActionBar(toolbar);
 //            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 //            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-            if(ticket.getString("closed_status").equals("1")){
+            if (ticket.getString("closed_status").equals("1")) {
                 btnSendPaymentRequest.setVisibility(View.INVISIBLE);
                 //btnMakePayment.setVisibility(View.INVISIBLE);
                 llMakePayment.setVisibility(View.INVISIBLE);
@@ -158,7 +158,6 @@ public class OptionActivity extends AppCompatActivity{
     }
 
 
-
     public void payment_request(View view) throws Exception {
         //Toast.makeText(getApplicationContext(), "TEst", Toast.LENGTH_SHORT).show();
         params.put("tiid", tiid);
@@ -169,7 +168,7 @@ public class OptionActivity extends AppCompatActivity{
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.e("paymentRequestReturn", response.toString());
-                HttpCache.write(getApplicationContext(), "report"+params, String.valueOf(response));
+                HttpCache.write(getApplicationContext(), "report" + params, String.valueOf(response));
                 Toast.makeText(getApplicationContext(), "Payment request sent successfully", Toast.LENGTH_SHORT).show();
 
             }
@@ -178,33 +177,28 @@ public class OptionActivity extends AppCompatActivity{
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
                 try {
                     Log.e("paymentRequestReturnFai", response.toString());
-                }catch (Exception er){
+                } catch (Exception er) {
                     er.printStackTrace();
                 }
 
-                if(statusCode==422)
-                {
+                if (statusCode == 422) {
                     Log.e("paymentRequestReturnFai", "in 422");
                     try {
                         JSONObject errors = response.getJSONObject("errors");
-                        Log.e("paymentRequestReturnFai", "in error - "+ errors.toString());
+                        Log.e("paymentRequestReturnFai", "in error - " + errors.toString());
                         //Toast.makeText(getApplicationContext(), errors.getString("tiid"), Toast.LENGTH_SHORT).show();
-                        if(errors.has("tiid"))
-                        {
+                        if (errors.has("tiid")) {
                             Toast.makeText(getApplicationContext(), errors.getJSONArray("tiid").getString(0), Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
-                }
-                else if(statusCode==401)
-                {
+                } else if (statusCode == 401) {
                     Intent i = new Intent(OptionActivity.this, MainActivity.class).putExtra("logout", "logout");
                     startActivity(i);
                 }
             }
         });
-
 
 
     }
@@ -221,14 +215,14 @@ public class OptionActivity extends AppCompatActivity{
         SimpleDateFormat df = new SimpleDateFormat("ddMMyyyy");
         String date = df.format(c.getTime());
         Random rand = new Random();
-        int min =1000, max= 9999;
+        int min = 1000, max = 9999;
         // nextInt as provided by Random is exclusive of the top value so you need to add 1
         int randomNum = rand.nextInt((max - min) + 1) + min;
-        orderIdString =  date+String.valueOf(randomNum);
+        orderIdString = date + String.valueOf(randomNum);
         //progressBar.setVisibility(View.VISIBLE);
 
         txnAmountString = etPaymentAmount.getText().toString();
-        if(txnAmountString.matches((""))){
+        if (txnAmountString.matches((""))) {
             //Toast.makeText(getApplicationContext(),"Please Enter Amount", Toast.LENGTH_LONG).show();
             etPaymentAmount.setError("Please Enter Amount");
             etPaymentAmount.findFocus();
@@ -278,7 +272,7 @@ public class OptionActivity extends AppCompatActivity{
         });
     }
 
-    public void startPaytmPayment (String token){
+    public void startPaytmPayment(String token) {
         txnTokenString = token;
         // for test mode use it
         //String host = "https://securegw-stage.paytm.in/";//commented
@@ -287,23 +281,23 @@ public class OptionActivity extends AppCompatActivity{
         String orderDetails = "MID: " + midString + ", OrderId: " + orderIdString + ", TxnToken: " + txnTokenString
                 + ", Amount: " + txnAmountString;
         //Log.e(TAG, "order details "+ orderDetails);
-        String callBackUrl = host + "theia/paytmCallback?ORDER_ID="+orderIdString;
-        Log.e(TAG, " callback URL "+callBackUrl);
+        String callBackUrl = host + "theia/paytmCallback?ORDER_ID=" + orderIdString;
+        Log.e(TAG, " callback URL " + callBackUrl);
         PaytmOrder paytmOrder = new PaytmOrder(orderIdString, midString, txnTokenString, txnAmountString, callBackUrl);
-        TransactionManager transactionManager = new TransactionManager(paytmOrder, new PaytmPaymentTransactionCallback(){
+        TransactionManager transactionManager = new TransactionManager(paytmOrder, new PaytmPaymentTransactionCallback() {
             @Override
             public void onTransactionResponse(Bundle bundle) {
-                Log.e(TAG, "Response (onTransactionResponse) : "+bundle.toString());
+                Log.e(TAG, "Response (onTransactionResponse) : " + bundle.toString());
 
                 //Toast.makeText(getApplicationContext(), "Payment has been completed successfully", Toast.LENGTH_LONG).show();
 
-                String respMsg =bundle.getString("RESPMSG");
+                String respMsg = bundle.getString("RESPMSG");
                 String txnID = bundle.getString("TXNID");
-                Log.e("OptionActivity", "RESPMSG : "+ respMsg);
-                tvPaytmResponse.setText(mPaytmResponse+ respMsg);
-                tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware+"Updating...");
+                Log.e("OptionActivity", "RESPMSG : " + respMsg);
+                tvPaytmResponse.setText(mPaytmResponse + respMsg);
+                tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updating...");
 
-                if(respMsg != null) {
+                if (respMsg != null) {
                     if (respMsg.equals("Txn Success")) {
                         Toast.makeText(getApplicationContext(), "Payment has been completed successfully", Toast.LENGTH_LONG).show();
                         tvPaytmResponse.setTextColor(getResources().getColor(R.color.colorGreen));
@@ -330,11 +324,11 @@ public class OptionActivity extends AppCompatActivity{
                                         tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updated failed. Contact Office");
                                         tvPaytmResponseAddPaymentInSoftware.setTextColor(getResources().getColor(R.color.colorRed));
                                         //Add appCare bugLog
-                                        params.put("log_code","C3001");
-                                        params.put("description", "OrderID : "+ orderIdString + " <br> "+" CustomerID : "+ cuid +" <br> " + "Ticket ID : "+ tiid + " <br> "+ " Amount : "+ txnAmountString);
+                                        params.put("log_code", "C3001");
+                                        params.put("description", "OrderID : " + orderIdString + " <br> " + " CustomerID : " + cuid + " <br> " + "Ticket ID : " + tiid + " <br> " + " Amount : " + txnAmountString);
                                         params.put("debug", getResources().getString(R.string.app_care_bug_log_debug));
 
-                                        client.post( "http://appcare.sf3.in/api/V1/saveBugRaiseV1", params, new JsonHttpResponseHandler() {
+                                        client.post("http://appcare.sf3.in/api/V1/saveBugRaiseV1", params, new JsonHttpResponseHandler() {
                                             @Override
                                             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
                                                 try {
@@ -346,6 +340,7 @@ public class OptionActivity extends AppCompatActivity{
                                                 //HttpCache.write(getApplicationContext(), "report"+params, String.valueOf(response));
                                                 //Toast.makeText(getApplicationContext(), "Payment initiated successfully", Toast.LENGTH_SHORT).show();
                                             }
+
                                             @Override
                                             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable e, JSONObject response) {
                                                 //Log.e("paymentRequestReturnFai", response.toString());
@@ -376,11 +371,11 @@ public class OptionActivity extends AppCompatActivity{
                                 tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updated failed. Contact Office");
                                 tvPaytmResponseAddPaymentInSoftware.setTextColor(getResources().getColor(R.color.colorRed));
                                 //Add appCare bugLog
-                                params.put("log_code","C3001");
-                                params.put("description", "OrderID : "+ orderIdString + " <br> "+" CustomerID : "+ cuid +" <br> " + "Ticket ID : "+ tiid + " <br> "+ " Amount : "+ txnAmountString);
+                                params.put("log_code", "C3001");
+                                params.put("description", "OrderID : " + orderIdString + " <br> " + " CustomerID : " + cuid + " <br> " + "Ticket ID : " + tiid + " <br> " + " Amount : " + txnAmountString);
                                 params.put("debug", R.string.app_care_bug_log_debug);
 
-                                client.post( "http://appcare.sf3.in/api/V1/saveBugRaiseV1", params, new JsonHttpResponseHandler() {
+                                client.post("http://appcare.sf3.in/api/V1/saveBugRaiseV1", params, new JsonHttpResponseHandler() {
                                     @Override
                                     public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
                                         try {
@@ -392,6 +387,7 @@ public class OptionActivity extends AppCompatActivity{
                                         //HttpCache.write(getApplicationContext(), "report"+params, String.valueOf(response));
                                         //Toast.makeText(getApplicationContext(), "Payment initiated successfully", Toast.LENGTH_SHORT).show();
                                     }
+
                                     @Override
                                     public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable e, JSONObject response) {
                                         //Log.e("paymentRequestReturnFai", response.toString());
@@ -453,41 +449,49 @@ public class OptionActivity extends AppCompatActivity{
                 //Toast.makeText(getApplicationContext(), respMsg, Toast.LENGTH_LONG).show();
                 //gotoHome();
             }
+
             @Override
             public void networkNotAvailable() {
                 Log.e(TAG, "network not available ");
             }
+
             @Override
             public void onErrorProceed(String s) {
-                Log.e(TAG, " onErrorProcess "+s.toString());
+                Log.e(TAG, " onErrorProcess " + s.toString());
             }
+
             @Override
             public void clientAuthenticationFailed(String s) {
-                Log.e(TAG, "Clientauth "+s);
+                Log.e(TAG, "Clientauth " + s);
             }
+
             @Override
             public void someUIErrorOccurred(String s) {
-                Log.e(TAG, " UI error "+s);
+                Log.e(TAG, " UI error " + s);
             }
+
             @Override
             public void onErrorLoadingWebPage(int i, String s, String s1) {
-                Log.e(TAG, " error loading web "+s+"--"+s1);
+                Log.e(TAG, " error loading web " + s + "--" + s1);
             }
+
             @Override
             public void onBackPressedCancelTransaction() {
                 Log.e(TAG, "backPress ");
             }
+
             @Override
             public void onTransactionCancel(String s, Bundle bundle) {
-                Log.e(TAG, " transaction cancel "+s);
+                Log.e(TAG, " transaction cancel " + s);
             }
         });
         transactionManager.setShowPaymentUrl(host + "theia/api/v1/showPaymentPage");
         transactionManager.startTransaction(OptionActivity.this, ActivityRequestCode);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e(TAG ," result code "+resultCode);
+        Log.e(TAG, " result code " + resultCode);
         // -1 means successful  // 0 means failed
         // one error is - nativeSdkForMerchantMessage : networkError
         super.onActivityResult(requestCode, resultCode, data);
@@ -498,9 +502,88 @@ public class OptionActivity extends AppCompatActivity{
                     Log.e(TAG, key + " : " + (bundle.get(key) != null ? bundle.get(key) : "NULL"));
                 }
             }
-            Log.e(TAG, "Data all "+ data.toString());
-            Log.e(TAG, " data "+  data.getStringExtra("nativeSdkForMerchantMessage"));
-            Log.e(TAG, " data response - "+data.getStringExtra("response"));
+            Log.e(TAG, "Data all " + data.toString());
+            Log.e(TAG, " data " + data.getStringExtra("nativeSdkForMerchantMessage"));
+            Log.e(TAG, " data response - " + data.getStringExtra("response"));
+
+
+            //tvPaytmResponse.setText(mPaytmResponse);
+            tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updating...");
+
+            JSONObject dataJSON;
+            String txnID = "";
+
+            try {
+
+                dataJSON = new JSONObject(data.getStringExtra("response"));
+
+                txnID = dataJSON.getString("TXNID");
+                Log.e("OptionActivity", "TXNID : " + txnID);
+
+
+                //tvPaytmResponse.setTextColor(getResources().getColor(R.color.colorGreen));
+                params.put("tiid", tiid);
+                params.put("cuid", cuid);
+                params.put("amount", txnAmountString);
+                params.put("trans_id", txnID);
+                client.addHeader("Accept", "application/json");
+                client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
+
+                dialogPayTM.setMessage("Payment success. Now Updating software..");
+                dialogPayTM.show();
+
+                client.post(Config.PAYTM_COLLECTION, params, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
+                        try {
+                            dialogPayTM.dismiss();
+                            if (response.getString("message").equals("success")) {
+                                tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updated Successfully");
+                                tvPaytmResponseAddPaymentInSoftware.setTextColor(getResources().getColor(R.color.colorGreen));
+                                etPaymentAmount.setText("");
+                            } else {
+                                tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updated failed. Contact Office");
+                                tvPaytmResponseAddPaymentInSoftware.setTextColor(getResources().getColor(R.color.colorRed));
+                                //Add appCare bugLog
+//                                params.put("log_code", "C3001");
+//                                params.put("description", "OrderID : " + orderIdString + " <br> " + " CustomerID : " + cuid + " <br> " + "Ticket ID : " + tiid + " <br> " + " Amount : " + txnAmountString);
+//                                params.put("debug", getResources().getString(R.string.app_care_bug_log_debug));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable e, JSONObject response) {
+                        dialogPayTM.dismiss();
+                        tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updated failed. Contact Office");
+                        tvPaytmResponseAddPaymentInSoftware.setTextColor(getResources().getColor(R.color.colorRed));
+                        //Add appCare bugLog
+//                        params.put("log_code", "C3001");
+//                        params.put("description", "OrderID : " + orderIdString + " <br> " + " CustomerID : " + cuid + " <br> " + "Ticket ID : " + tiid + " <br> " + " Amount : " + txnAmountString);
+//                        params.put("debug", R.string.app_care_bug_log_debug);
+                        if (statusCode == 422) {
+                            Log.e("paymentRequestReturnFai", "in 422");
+                            try {
+                                JSONObject errors = response.getJSONObject("errors");
+                                Log.e("paymentRequestReturnFai", "in error - " + errors.toString());
+
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+                        } else if (statusCode == 401) {
+
+                        }
+                    }
+                });
+
+
+            } catch (Exception e) {
+                Log.e("OptionActivity", " ExceptionDataJSON " + e.toString());
+            }
+
+
 /*
  data response - {"BANKNAME":"WALLET","BANKTXNID":"1394221115",
  "CHECKSUMHASH":"7jRCFIk6eRmrep+IhnmQrlrL43KSCSXrmM+VHP5pH0ekXaaxjt3MEgd1N9mLtWyu4VwpWexHOILCTAhybOo5EVDmAEV33rg2VAS/p0PXdk\u003d",
@@ -508,33 +591,33 @@ public class OptionActivity extends AppCompatActivity{
  "PAYMENTMODE":"PPI","RESPCODE":"01","RESPMSG":"Txn Success","STATUS":"TXN_SUCCESS",
  "TXNAMOUNT":"2.00","TXNDATE":"2020-06-10 16:57:45.0","TXNID":"2020061011121280011018328631290118"}
   */
-            Toast.makeText(this, data.getStringExtra("nativeSdkForMerchantMessage")
-                    + data.getStringExtra("response"), Toast.LENGTH_SHORT).show();
-        }else{
+//            Toast.makeText(this, data.getStringExtra("nativeSdkForMerchantMessage")
+//                    + data.getStringExtra("response"), Toast.LENGTH_SHORT).show();
+        } else {
             Log.e(TAG, " payment failed");
+            tvPaytmResponse.setTextColor(getResources().getColor(R.color.colorRed));
+            tvPaytmResponseAddPaymentInSoftware.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), "Payment failed. Something went wrong", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void gotoHome(){
+    private void gotoHome() {
         startActivity(new Intent(OptionActivity.this, HomeActivity.class));
     }
-
-
-
 
 
     public void new_chit_request(View view) {
         try {
 
-            if(newChitRequestAmount.getText().toString().matches("")){
+            if (newChitRequestAmount.getText().toString().matches("")) {
                 Toast.makeText(getApplicationContext(), "Please enter amount", Toast.LENGTH_SHORT).show();
                 newChitRequestAmount.findFocus();
                 return;
             }
 
             params.put("cuid", ticket.getString("cuid"));
-            params.put("date","15");
-            params.put("amount",newChitRequestAmount.getText().toString());
+            params.put("date", "15");
+            params.put("amount", newChitRequestAmount.getText().toString());
             client.addHeader("Accept", "application/json");
             client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
 
@@ -542,7 +625,7 @@ public class OptionActivity extends AppCompatActivity{
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     Log.e("chitRequestReturn", response.toString());
-                    HttpCache.write(getApplicationContext(), "report"+params, String.valueOf(response));
+                    HttpCache.write(getApplicationContext(), "report" + params, String.valueOf(response));
                     Toast.makeText(getApplicationContext(), "New Chit request sent successfully", Toast.LENGTH_SHORT).show();
                     newChitRequestAmount.setText("");
                 }
@@ -550,12 +633,11 @@ public class OptionActivity extends AppCompatActivity{
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
                     Log.e("chitRequestReturnFai", response.toString());
-                    if(statusCode==422)
-                    {
+                    if (statusCode == 422) {
                         Log.e("chitRequestReturnFai", "in 422");
                         try {
                             JSONObject errors = response.getJSONObject("errors");
-                            Log.e("chitRequestReturnFai", "in error - "+ errors.toString());
+                            Log.e("chitRequestReturnFai", "in error - " + errors.toString());
                             Toast.makeText(getApplicationContext(), errors.getString("tiid"), Toast.LENGTH_SHORT).show();
 //                        if(errors.has("tiid"))
 //                        {
@@ -564,9 +646,7 @@ public class OptionActivity extends AppCompatActivity{
                         } catch (JSONException e1) {
                             e1.printStackTrace();
                         }
-                    }
-                    else if(statusCode==401)
-                    {
+                    } else if (statusCode == 401) {
                         Intent i = new Intent(OptionActivity.this, MainActivity.class).putExtra("logout", "logout");
                         startActivity(i);
                     }
@@ -580,25 +660,25 @@ public class OptionActivity extends AppCompatActivity{
     }
 
 
-    public void download_statement(View view){
+    public void download_statement(View view) {
         client.addHeader("Accept", "application/json");
         client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
 
         dialog.setMessage("Loading...");
         dialog.show();
 
-        client.get(Config.DOWNLOAD_STATEMENT+tiid, params, new JsonHttpResponseHandler() {
+        client.get(Config.DOWNLOAD_STATEMENT + tiid, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 dialog.dismiss();
                 Log.e("downloadRequestReturn", response.toString());
-                String _filename="test";
+                String _filename = "test";
                 try {
                     JSONObject success = response.getJSONObject("success");
-                    if(success.has("path")){
+                    if (success.has("path")) {
                         Log.e("downloadRequestReturn", success.getJSONArray("path").getString(0));
                         _filename = success.getJSONArray("path").getString(0);
-                    }else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "No file downloaded", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -608,7 +688,7 @@ public class OptionActivity extends AppCompatActivity{
 
 
                 //String _url = "http://192.168.1.6:8000/ledger_view_statement/"+_filename;
-                String _url = Config.DOWNLOAD_STATEMENT_URL+_filename;
+                String _url = Config.DOWNLOAD_STATEMENT_URL + _filename;
                 //_url = "http://test4.sf3.in/ledger_view_statement/Statement_A1B-1-2.pdf";
                 Log.e("URL", _url);
 
@@ -619,7 +699,7 @@ public class OptionActivity extends AppCompatActivity{
 
                 //new DownloadTask(OptionActivity.this, _url);
 
-                HttpCache.write(getApplicationContext(), "report"+params, String.valueOf(response));
+                HttpCache.write(getApplicationContext(), "report" + params, String.valueOf(response));
                 Toast.makeText(getApplicationContext(), "Downloaded successfully", Toast.LENGTH_SHORT).show();
                 //new DownloadFile().execute("http://192.168.1.6:8000/ledger_view_statement/Statement_A1C-6-7.pdf", "Statement_A1C.pdf");
                 //new DownloadFile().execute(_url, _filename);
@@ -687,13 +767,13 @@ public class OptionActivity extends AppCompatActivity{
                 startActivity(new Intent(this, ContactAcivity.class));
                 return true;
             case R.id.action_privacy_policy:
-                startActivity(new Intent(this,PrivacyPolicyActivity.class));
+                startActivity(new Intent(this, PrivacyPolicyActivity.class));
                 return true;
             case R.id.action_terms_conditions:
-                startActivity(new Intent(this,TermsConditionsActivity.class));
+                startActivity(new Intent(this, TermsConditionsActivity.class));
                 return true;
             case R.id.action_refund_cancellation:
-                startActivity(new Intent(this,ReturnRefundActivity.class));
+                startActivity(new Intent(this, ReturnRefundActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

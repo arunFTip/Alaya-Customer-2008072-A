@@ -161,6 +161,7 @@ public class PassbookActivity extends AppCompatActivity {
         client.get(Config.LEDGER_URL, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Log.e("passBookPre", "inSucess");
                 process_data(response);
                 //HttpCache.write(getApplicationContext(), "ledger"+params, String.valueOf(response));
             }
@@ -168,6 +169,7 @@ public class PassbookActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
                 //Log.e("passBookFail", response.toString());
+                Log.e("passBookPre", "inFailure");
                 e.printStackTrace();
                 dialog.dismiss();
             }

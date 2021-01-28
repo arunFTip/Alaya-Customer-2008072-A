@@ -52,6 +52,8 @@ public class HomeActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
 
+        Log.e("home","before api");
+
         adapter = new TicketsAdapter(ticket_list,  new TicketsAdapter.OnItemClickListener() {
             @Override public void onItemClick(JSONObject ticket) {
                 Log.e("passinglogH",ticket.toString());
