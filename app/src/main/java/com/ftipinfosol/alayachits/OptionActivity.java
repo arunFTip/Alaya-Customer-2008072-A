@@ -68,10 +68,24 @@ public class OptionActivity extends AppCompatActivity {
 
     private String TAG = "OptionActivity";
     private Integer ActivityRequestCode = 2;
-    private String midString = "JbSYXr73122233302720", txnAmountString = "", orderIdString = "", txnTokenString = "";
+    private String midString = "eWrKgz59911424619072", txnAmountString = "", orderIdString = "", txnTokenString = "";
     EditText etPaymentAmount;
 
-    //PayTm production change midString & String host; Prod - JbSYXr73122233302720; Test - eWrKgz59911424619072
+    //PayTm production change in App
+    // midString & String host; - 2 place only
+    // Prod - JbSYXr73122233302720;
+    // Stage - eWrKgz59911424619072
+    //PayTm in web
+    //BlueInitiateTransaction.php
+    //mid - Stage: "mid" => eWrKgz59911424619072 - Prod: "mid" => JbSYXr73122233302720
+    //websiteName - Sage: "websiteName" => "WEBSTAGING", Prod: "websiteName" => "DEFAULT", //Production
+    //callbackUrl - Stage: "callbackUrl"   => "https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=".$orderID, - Prod: "callbackUrl" => "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=" . $orderID,
+    //checksum - Stage: $checksum = PaytmChecksum::generateSignature(json_encode($paytmParams["body"], JSON_UNESCAPED_SLASHES), "dKVqB40sM4QS4i1c"); - Prod: $checksum = PaytmChecksum::generateSignature(json_encode($paytmParams["body"], JSON_UNESCAPED_SLASHES), "SzUJbOUC3VAaxvR!");
+    //$url - Stage: $url = 'https://securegw-stage.paytm.in/theia/api/v1/initiateTransaction?mid=eWrKgz59911424619072&orderId='.$orderID; - Prod: $url = "https://securegw.paytm.in/theia/api/v1/initiateTransaction?mid=JbSYXr73122233302720&orderId=" . $orderID;
+    //app\Http\Controllers\Paytm\PaytmVerificationController.php
+    //mid - Stage: "mid" => eWrKgz59911424619072 - Prod: "mid" => JbSYXr73122233302720
+    //$checksum - Prod: $checksum = BluePaytmChecksum::generateSignature(json_encode($paytmParams["body"], JSON_UNESCAPED_SLASHES), "SzUJbOUC3VAaxvR!"); Stage: $checksum = BluePaytmChecksum::generateSignature(json_encode($paytmParams["body"], JSON_UNESCAPED_SLASHES), "dKVqB40sM4QS4i1c");//Stage
+    //$url - Prod: $url = "https://securegw.paytm.in/v3/order/status"; Stage: $url = "https://securegw-stage.paytm.in/v3/order/status";
 
     TextView tvPaytmResponse, tvPaytmResponseAddPaymentInSoftware;
     String mPaytmResponse, mPaytmResponseAddPaymentInSoftware;
@@ -275,11 +289,10 @@ public class OptionActivity extends AppCompatActivity {
     public void startPaytmPayment(String token) {
         txnTokenString = token;
         // for test mode use it
-        //String host = "https://securegw-stage.paytm.in/";//commented
+        String host = "https://securegw-stage.paytm.in/";//stage
         // for production mode use it
-        String host = "https://securegw.paytm.in/";
-        String orderDetails = "MID: " + midString + ", OrderId: " + orderIdString + ", TxnToken: " + txnTokenString
-                + ", Amount: " + txnAmountString;
+        //String host = "https://securegw.paytm.in/";//Production
+        //String orderDetails = "MID: " + midString + ", OrderId: " + orderIdString + ", TxnToken: " + txnTokenString + ", Amount: " + txnAmountString;
         //Log.e(TAG, "order details "+ orderDetails);
         String callBackUrl = host + "theia/paytmCallback?ORDER_ID=" + orderIdString;
         Log.e(TAG, " callback URL " + callBackUrl);
@@ -288,9 +301,7 @@ public class OptionActivity extends AppCompatActivity {
             @Override
             public void onTransactionResponse(Bundle bundle) {
                 Log.e(TAG, "Response (onTransactionResponse) : " + bundle.toString());
-
                 //Toast.makeText(getApplicationContext(), "Payment has been completed successfully", Toast.LENGTH_LONG).show();
-
                 String respMsg = bundle.getString("RESPMSG");
                 String txnID = bundle.getString("TXNID");
                 Log.e("OptionActivity", "RESPMSG : " + respMsg);
@@ -305,12 +316,12 @@ public class OptionActivity extends AppCompatActivity {
                         params.put("cuid", cuid);
                         params.put("amount", txnAmountString);
                         params.put("trans_id", txnID);
+                        params.put("status", "Txn Success");
+                        params.put("order_id", orderIdString);
                         client.addHeader("Accept", "application/json");
                         client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
-
                         dialogPayTM.setMessage("Payment success. Now Updating software..");
                         dialogPayTM.show();
-
                         client.post(Config.PAYTM_COLLECTION, params, new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
@@ -421,12 +432,60 @@ public class OptionActivity extends AppCompatActivity {
                                 }
                             }
                         });
-
-
                     } else {
                         tvPaytmResponse.setTextColor(getResources().getColor(R.color.colorRed));
                         tvPaytmResponseAddPaymentInSoftware.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Payment failed. Something went wrong", Toast.LENGTH_LONG).show();
+
+                        params.put("tiid", tiid);
+                        params.put("cuid", cuid);
+                        params.put("amount", txnAmountString);
+                        params.put("trans_id", txnID);
+                        params.put("status", respMsg);
+                        params.put("order_id", orderIdString);
+                        client.addHeader("Accept", "application/json");
+                        client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
+                        client.post(Config.PAYTM_COLLECTION, params, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
+                                try {
+                                    dialogPayTM.dismiss();
+                                    if (response.getString("message").equals("success")) {
+                                        tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updated failed. Contact Office");
+                                        tvPaytmResponseAddPaymentInSoftware.setTextColor(getResources().getColor(R.color.colorRed));
+                                        etPaymentAmount.setText("");
+                                    } else {
+                                        tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updated failed. Contact Office");
+                                        tvPaytmResponseAddPaymentInSoftware.setTextColor(getResources().getColor(R.color.colorRed));
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable e, JSONObject response) {
+                                dialogPayTM.dismiss();
+                                tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updated failed. Contact Office");
+                                tvPaytmResponseAddPaymentInSoftware.setTextColor(getResources().getColor(R.color.colorRed));
+
+
+                                //Log.e("paymentRequestReturnFai", response.toString());
+                                if (statusCode == 422) {
+                                    Log.e("paymentRequestReturnFai", "in 422");
+                                    try {
+                                        JSONObject errors = response.getJSONObject("errors");
+                                        Log.e("paymentRequestReturnFai", "in error - " + errors.toString());
+
+                                    } catch (JSONException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                } else if (statusCode == 401) {
+
+                                }
+                            }
+                        });
                     }
 //                }
 //
@@ -445,6 +504,56 @@ public class OptionActivity extends AppCompatActivity {
 //                            .setContentText("Something went wrong. Please try again. If amount debited, will credit automatically to your account.")
 //                            .show();
 //                    //gotoHome();
+                }else{
+                    params.put("tiid", tiid);
+                    params.put("cuid", cuid);
+                    params.put("amount", txnAmountString);
+                    params.put("trans_id", txnID);
+                    params.put("status", "Null Response");
+                    params.put("order_id", orderIdString);
+                    client.addHeader("Accept", "application/json");
+                    client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
+                    client.post(Config.PAYTM_COLLECTION, params, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
+                            try {
+                                dialogPayTM.dismiss();
+                                if (response.getString("message").equals("success")) {
+                                    tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updated failed. Contact Office");
+                                    tvPaytmResponseAddPaymentInSoftware.setTextColor(getResources().getColor(R.color.colorRed));
+                                    etPaymentAmount.setText("");
+                                } else {
+                                    tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updated failed. Contact Office");
+                                    tvPaytmResponseAddPaymentInSoftware.setTextColor(getResources().getColor(R.color.colorRed));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable e, JSONObject response) {
+                            dialogPayTM.dismiss();
+                            tvPaytmResponseAddPaymentInSoftware.setText(mPaytmResponseAddPaymentInSoftware + "Updated failed. Contact Office");
+                            tvPaytmResponseAddPaymentInSoftware.setTextColor(getResources().getColor(R.color.colorRed));
+
+
+                            //Log.e("paymentRequestReturnFai", response.toString());
+                            if (statusCode == 422) {
+                                Log.e("paymentRequestReturnFai", "in 422");
+                                try {
+                                    JSONObject errors = response.getJSONObject("errors");
+                                    Log.e("paymentRequestReturnFai", "in error - " + errors.toString());
+
+                                } catch (JSONException e1) {
+                                    e1.printStackTrace();
+                                }
+                            } else if (statusCode == 401) {
+
+                            }
+                        }
+                    });
                 }
                 //Toast.makeText(getApplicationContext(), respMsg, Toast.LENGTH_LONG).show();
                 //gotoHome();
