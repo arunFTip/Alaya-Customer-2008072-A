@@ -10,16 +10,54 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+import eu.dkaratzas.android.inapp.update.InAppUpdateManager;
+import eu.dkaratzas.android.inapp.update.InAppUpdateStatus;
+
+public class MainActivity extends AppCompatActivity implements InAppUpdateManager.InAppUpdateHandler{
 
     public static JSONObject AUTH_USER;
     public static String AUTH_TOKEN;
     private FirebaseAnalytics mFirebaseAnalytics;
+
+    private static final int REQ_CODE_VERSION_UPDATE = 530;
+    private InAppUpdateManager inAppUpdateManager;
+
+    @Override
+    public void onInAppUpdateError(int code, Throwable error) {
+
+    }
+
+    @Override
+    public void onInAppUpdateStatus(InAppUpdateStatus status) {
+        /*
+         * If the update downloaded, ask user confirmation and complete the update
+         */
+
+        if (status.isDownloaded()) {
+
+            View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+
+            Snackbar snackbar = Snackbar.make(rootView,
+                    "An update has just been downloaded.",
+                    Snackbar.LENGTH_INDEFINITE);
+
+            snackbar.setAction("RESTART", view -> {
+
+                // Triggers the completion of the update of the app for the flexible flow.
+                inAppUpdateManager.completeUpdate();
+
+            });
+
+            snackbar.show();
+
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +66,28 @@ public class MainActivity extends AppCompatActivity {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        Button crashButton = new Button(this);
-        crashButton.setText("Crash!");
-        crashButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                throw new RuntimeException("Test Crash"); // Force a crash
-            }
-        });
+//        Button crashButton = new Button(this);
+//        crashButton.setText("Crash!");
+//        crashButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                throw new RuntimeException("Test Crash"); // Force a crash
+//            }
+//        });
+//
+//        addContentView(crashButton, new ViewGroup.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        addContentView(crashButton, new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
+        inAppUpdateManager = InAppUpdateManager.Builder(this, REQ_CODE_VERSION_UPDATE)
+                .resumeUpdates(true) // Resume the update, if the update was stalled. Default is true
+                .mode(eu.dkaratzas.android.inapp.update.Constants.UpdateMode.IMMEDIATE)
+                // default is false. If is set to true you,
+                // have to manage the user confirmation when
+                // you detect the InstallStatus.DOWNLOADED status,
+                .useCustomNotification(true)
+                .handler(this);
+
+        inAppUpdateManager.checkForAppUpdate();
 
 
         Intent intent = getIntent();
