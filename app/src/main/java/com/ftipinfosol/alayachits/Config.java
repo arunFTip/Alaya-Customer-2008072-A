@@ -35,7 +35,7 @@ public class Config {
     public static String LEDGER_EXTRACT = BASE_URL+"ledger_extract/";
 
 
-    public static String GET_PAYTM_CHECKSM = URL +"BlueInitiateTransaction.php";
+    public static String GET_PAYTM_CHECKSM = URL +"BlueInitiateTransactionV12.php";
     public static String PAYTM_COLLECTION = BASE_URL+"savePaytmCollection";
 
     //added now - 11-01-2021 - 6:11 pm
