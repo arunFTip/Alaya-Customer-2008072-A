@@ -68,7 +68,7 @@ public class OptionActivity extends AppCompatActivity {
 
     private String TAG = "OptionActivity";
     private Integer ActivityRequestCode = 2;
-    private String midString = "eWrKgz59911424619072", txnAmountString = "", orderIdString = "", txnTokenString = "";
+    private String midString = "JbSYXr73122233302720", txnAmountString = "", orderIdString = "", txnTokenString = "";
     EditText etPaymentAmount;
 
     //PayTm production change in App
@@ -289,9 +289,9 @@ public class OptionActivity extends AppCompatActivity {
     public void startPaytmPayment(String token) {
         txnTokenString = token;
         // for test mode use it
-        String host = "https://securegw-stage.paytm.in/";//stage
+        //String host = "https://securegw-stage.paytm.in/";//stage
         // for production mode use it
-        //String host = "https://securegw.paytm.in/";//Production
+        String host = "https://securegw.paytm.in/";//Production
         //String orderDetails = "MID: " + midString + ", OrderId: " + orderIdString + ", TxnToken: " + txnTokenString + ", Amount: " + txnAmountString;
         //Log.e(TAG, "order details "+ orderDetails);
         String callBackUrl = host + "theia/paytmCallback?ORDER_ID=" + orderIdString;
