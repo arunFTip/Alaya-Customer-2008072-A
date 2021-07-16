@@ -634,7 +634,11 @@ public class OptionActivity extends AppCompatActivity {
                 params.put("tiid", tiid);
                 params.put("cuid", cuid);
                 params.put("amount", txnAmountString);
+                params.put("status", data.getStringExtra("response"));
+                //params.put("status", "Txn Success - onActivityResult");
+                params.put("order_id", orderIdString);
                 params.put("trans_id", txnID);
+
                 client.addHeader("Accept", "application/json");
                 client.addHeader("Authorization", MainActivity.AUTH_TOKEN);
 
